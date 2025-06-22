@@ -40,7 +40,7 @@ RISK_GRADIENT = ['#27ae60', '#f39c12', '#e74c3c']  # Green to Orange to Red
 st.markdown("""
 <style>
     .main-header {
-        font-size: 3rem;
+        font-size: 2.5rem;
         color: #e74c3c;
         text-align: center;
         margin-bottom: 2rem;
@@ -67,7 +67,7 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .metric-card .metric-value {
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: bold;
         color: #2c3e50;
         margin-bottom: 0.3rem;
