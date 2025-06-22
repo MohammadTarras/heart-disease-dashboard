@@ -2,13 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelEncoder
 import warnings
-import traceback
 warnings.filterwarnings('ignore')
 
 # Configure page
@@ -498,7 +492,7 @@ def main():
         """)
     
     except Exception as e:
-        st.error(f"❌ An error occurred while loading the data: {str(traceback.format_exc())}")
+        st.error(f"❌ An error occurred while loading the data: {str(e)}")
         st.info("Please check your data file format and try again.")
 
 if __name__ == "__main__":
