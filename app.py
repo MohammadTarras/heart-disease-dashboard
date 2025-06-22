@@ -55,27 +55,37 @@ st.markdown("""
         padding-bottom: 0.5rem;
     }
     .metric-card {
-        background-color: #f8f9fa;
-        padding: 1.5rem 1.5rem;
-        border-radius: 0.8rem;
-        border-left: 6px solid #e74c3c;
-        margin-bottom: 1.5rem;
-        min-height: 80px;
+        width: 200px; /* Optional: Fix width for uniformity */
+        height: 100px; /* Adjust height based on content */
         display: flex;
         flex-direction: column;
         justify-content: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        align-items: flex-start;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        margin: 0.5rem;
+        white-space: nowrap; /* Prevent line breaks */
+        overflow: hidden;
     }
-    .metric-card .metric-value {
+
+    .metric-value {
         font-size: 1.5rem;
         font-weight: bold;
         color: #2c3e50;
         margin-bottom: 0.3rem;
     }
-    .metric-card .metric-label {
+
+    .metric-label {
         font-size: 1rem;
         color: #7f8c8d;
         font-weight: 500;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
     }
     .insight-box {
         background-color: #e8f4fd;
