@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Password configuration - Change these values for your security
-CORRECT_PASSWORD = "heartdisease2024"  # Change this to your desired password
+CORRECT_PASSWORD = "heartdisease"  # Change this to your desired password
 HASHED_PASSWORD = hashlib.sha256(CORRECT_PASSWORD.encode()).hexdigest()
 
 def check_password():
