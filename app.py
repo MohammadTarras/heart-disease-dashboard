@@ -64,7 +64,7 @@ def check_password():
         <p style="color: #6c757d; font-size: 1rem; line-height: 1.6;">
             This dashboard provides comprehensive analysis of heart disease data including:
         </p>
-        <div style="display: flex; justify-content: space-around; margin-top: 1.5rem; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: space-around; margin-top: 1.5rem; flex-wrap: wrap;color: black;">
             <div style="margin: 0.5rem;">
                 <span style="font-size: 1.5rem;">👥</span><br>
                 <strong>Demographics</strong>
