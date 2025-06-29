@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import warnings
+import hashlib
 warnings.filterwarnings('ignore')
 
 # Configure page
@@ -12,6 +13,86 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Password configuration - Change these values for your security
+CORRECT_PASSWORD = "heartdisease2024"  # Change this to your desired password
+HASHED_PASSWORD = hashlib.sha256(CORRECT_PASSWORD.encode()).hexdigest()
+
+def check_password():
+    """Returns `True` if the user has entered the correct password."""
+    
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if hashlib.sha256(st.session_state["password"].encode()).hexdigest() == HASHED_PASSWORD:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Don't store the password
+        else:
+            st.session_state["password_correct"] = False
+
+    # Return True if the password is validated
+    if st.session_state.get("password_correct", False):
+        return True
+
+    # Show input for password
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem;">
+        <h1 style="color: #e74c3c; font-size: 3rem; margin-bottom: 1rem;">🔒 Secure Access</h1>
+        <h2 style="color: #2c3e50; font-size: 1.5rem; margin-bottom: 2rem;">Heart Disease Analysis Dashboard</h2>
+        <p style="color: #7f8c8d; font-size: 1.1rem;">Please enter the password to access the medical dashboard</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Center the password input
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.text_input(
+            "Password", 
+            type="password", 
+            on_change=password_entered, 
+            key="password",
+            placeholder="Enter dashboard password..."
+        )
+        
+        if "password_correct" in st.session_state:
+            if not st.session_state["password_correct"]:
+                st.error("❌ Incorrect password. Please try again.")
+            
+    # Add some styling and information
+    st.markdown("""
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 10px;">
+        <h3 style="color: #2c3e50; margin-bottom: 1rem;">🏥 About This Dashboard</h3>
+        <p style="color: #6c757d; font-size: 1rem; line-height: 1.6;">
+            This dashboard provides comprehensive analysis of heart disease data including:
+        </p>
+        <div style="display: flex; justify-content: space-around; margin-top: 1.5rem; flex-wrap: wrap;">
+            <div style="margin: 0.5rem;">
+                <span style="font-size: 1.5rem;">👥</span><br>
+                <strong>Demographics</strong>
+            </div>
+            <div style="margin: 0.5rem;">
+                <span style="font-size: 1.5rem;">🏥</span><br>
+                <strong>Clinical Data</strong>
+            </div>
+            <div style="margin: 0.5rem;">
+                <span style="font-size: 1.5rem;">⚠️</span><br>
+                <strong>Risk Factors</strong>
+            </div>
+            <div style="margin: 0.5rem;">
+                <span style="font-size: 1.5rem;">💡</span><br>
+                <strong>Insights</strong>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Footer
+    st.markdown("""
+    <div style="text-align: center; margin-top: 2rem; padding: 1rem; color: #adb5bd;">
+        <small>🔐 Secure Medical Data Analysis • MSBA 382 Project</small>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    return False
 
 # Define medical-themed color palettes
 MEDICAL_COLORS = {
@@ -86,13 +167,31 @@ st.markdown("""
         white-space: nowrap;
     }
 
-    }
     .insight-box {
         background-color: #e8f4fd;
         padding: 1rem;
         border-radius: 0.5rem;
         border-left: 4px solid #3498db;
         margin: 1rem 0;
+    }
+    
+    /* Logout button styling */
+    .logout-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    
+    .logout-button:hover {
+        background-color: #c0392b;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -396,10 +495,8 @@ def create_risk_factors_analysis(df):
         
     with col2:
         # Exercise-induced angina with teal colors
-        print(df_display)
         exang_disease = df_display.groupby(['exang_label', 'heart_disease_label']).size().reset_index(name='count')
         
-        #print(exang_disease)
         # Calculate percentages for exercise-induced angina
         exang_totals = df_display.groupby('exang_label').size().reset_index(name='total')
         exang_disease = exang_disease.merge(exang_totals, on='exang_label')
@@ -454,8 +551,22 @@ def create_insights_and_recommendations(df):
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
-def main():
+def logout():
+    """Clear session state to logout"""
+    st.session_state["password_correct"] = False
+    st.rerun()
 
+def main():
+    # Check if user is authenticated
+    if not check_password():
+        return
+    
+    # Add logout button in sidebar
+    with st.sidebar:
+        st.markdown("---")
+        if st.button("🔐 Logout", key="logout_btn"):
+            logout()
+    
     st.markdown('''
         <div class="main-header">
             <span style="color:white;">MSBA 382 Project</span><br>🫀 Heart Disease Analysis Dashboard
